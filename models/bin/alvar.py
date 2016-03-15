@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import os
+for i in xrange(0,12):
+	os.system('rosrun ar_track_alvar createMarker %d' %i)
+	os.system("convert MarkerData_"+str(i)+".png -bordercolor white -border 100x100"+" MarkerData_"+str(1)+".png".format(i,i))
+
+	with open('product_%d.material'%i,'w') as f:
+		f.write('''
+material product_%d {
+	receive_shadows on
+	technique {
+		pass {
+			ambient 1.0 1.0 1.0 1.0
+			diffuse 1.0 1.0 1.0 1.0
+			specular 0.5 0.5 0.5 1.0
+			lighting on
+			shading gouraud
+			texture_unit { texture MarkerData_%d.png }
+		}
+	}
+}
+'''%(i,i))
